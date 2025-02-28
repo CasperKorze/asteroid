@@ -7,7 +7,7 @@ from constants import *
 
 def main():
 	pygame.init() #initialize all imported pygame modules
-	pygame.time.Clock
+	clock = pygame.time.Clock()
 	dt = 0
 
 
@@ -19,6 +19,8 @@ def main():
 	while True:
 		screen.fill((0, 0, 0))  # Wypełniamy ekran czarnym kolorem
 		pygame.display.flip()    # Odświeżamy ekran
+		delta_time = clock.tick(60) / 1000
+		dt = delta_time
 #-------------------------------------------------------------------------------------------------
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT: return
