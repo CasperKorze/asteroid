@@ -19,14 +19,13 @@ def main():
 	while True:
 		screen.fill((0, 0, 0))  # Wypełniamy ekran czarnym kolorem
 		pygame.display.flip()    # Odświeżamy ekran
-		delta_time = clock.tick(60) / 1000
-		dt = delta_time
 #-------------------------------------------------------------------------------------------------
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT: return
 #This will check if the user has closed the window and exit the game loop if they do. It will make the window's close button work.
-
-
+		delta_time = clock.tick(60) / 1000 # - Ustawiam fpsy na 60
+		dt = delta_time
+#============================================================
 
 
 if __name__ == "__main__":
