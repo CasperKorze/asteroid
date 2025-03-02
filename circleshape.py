@@ -22,3 +22,4 @@ class CircleShape(pygame.sprite.Sprite):
         pass
 
     PLAYER_RADIUS = 20
+    
