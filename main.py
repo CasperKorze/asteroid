@@ -3,7 +3,7 @@
 # throughout this file
 import pygame
 from constants import *
-from player import Player 
+from player import * 
 
 
 def main():
@@ -22,6 +22,7 @@ def main():
 	while True:
 		screen.fill((0, 0, 0))  # Wypełniamy ekran czarnym kolorem
 		player.draw(screen) #odświeża gracza each frame
+		player.update(dt)
 		pygame.display.flip()    # Odświeżamy ekran
 #-------------------------------------------------------------------------------------------------
 		for event in pygame.event.get():
@@ -29,6 +30,7 @@ def main():
 #This will check if the user has closed the window and exit the game loop if they do. It will make the window's close button work.
 		delta_time = clock.tick(60) / 1000 # - Ustawiam fpsy na 60
 		dt = delta_time
+		
 #============================================================
 
 
