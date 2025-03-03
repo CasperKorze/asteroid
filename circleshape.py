@@ -20,6 +20,16 @@ class CircleShape(pygame.sprite.Sprite):
     def update(self, dt):
         # sub-classes must override
         pass
+    def collides_with(self, other_shape):
+    # Oblicz odległość między środkami dwóch kształtów
+        distance = self.position.distance_to(other_shape.position)
+    
+    # Sprawdź, czy odległość jest mniejsza niż suma promieni
+        return distance <= (self.radius + other_shape.radius)
+
+ 
+
+
 
     PLAYER_RADIUS = 20
     
