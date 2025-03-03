@@ -4,6 +4,9 @@
 import pygame
 from constants import *
 from player import * 
+from asteroid import Asteroid 
+from asteroidfield import AsteroidField
+
 
 
 def main():
@@ -19,8 +22,14 @@ def main():
 	
 	updatable = pygame.sprite.Group()
 	drawable = pygame.sprite.Group()
+	asteroids = pygame.sprite.Group()
+	
 	Player.containers = (updatable, drawable)
+	Asteroid.containers = (asteroids, updatable, drawable)
+	AsteroidField.containers = (updatable)
 	player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) #gracz
+	asteroid_field = AsteroidField()  #asteroidy
+	
  
 
 #Początek pętli, tzn kodu któru tworzy ekran dla gry ---------------------------------------------	
@@ -41,6 +50,7 @@ def main():
 		dt = delta_time
 		
 #============================================================
+
 
 
 
