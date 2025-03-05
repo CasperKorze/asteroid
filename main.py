@@ -53,6 +53,14 @@ def main():
                 if player.collides_with(asteroid):  # ✅ Używamy gotowej funkcji Pygame
                     print("Game over!") , sys.exit()  # ✅ Poprawne wyjście z gry
 
+        for asteroid in asteroids.sprites():  
+             for shot in shots.sprites():  
+                if shot.collides_with(asteroid):
+                    asteroid.kill()
+                    shot.kill() 
+
+             
+
 
 #-------------------------------------------------------------------------------------------------
         
