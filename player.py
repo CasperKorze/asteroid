@@ -41,14 +41,19 @@ class Player(CircleShape):
             self.rotate(-dt)
         if keys[pygame.K_d]:
             self.rotate(dt)
-        if keys[pygame.K_SPACE] and self.timer <= 0: 
-            self.shoot()
+
+
 
         if self.timer > 0:
             self.timer -= dt
+        # Strzał tylko jeśli timer == 0, ale gdy SPACE jest trzymany, ignorujemy go do końca cooldownu
+        if self.timer <= 0:  # Tylko jeśli cooldown się skończył
+            if keys[pygame.K_SPACE]:  # Jeśli SPACE jest naciśnięty, strzelamy
+                self.shoot()
+                self.timer = PLAYER_SHOOT_COOLDOWN  # BLOKUJEMY SPACE na 0.3s
 
     def shoot(self):
-        if self.timer <= 0:
             shot = Shot(self.position.x, self.position.y)
             shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOT_SPEED
+
             
