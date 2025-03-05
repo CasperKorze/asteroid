@@ -27,9 +27,4 @@ class CircleShape(pygame.sprite.Sprite):
     # Sprawdź, czy odległość jest mniejsza niż suma promieni
         return distance <= (self.radius + other_shape.radius)
 
- 
-
-
-
     PLAYER_RADIUS = 20
-    
