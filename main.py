@@ -5,11 +5,29 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
 
+def draw_game_over(screen, score):
+    font = pygame.font.Font(None, 74)
+    text = font.render("Game Over", True, (255, 0, 0))
+    text_rect = text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 50))
+    screen.blit(text, text_rect)
+
+    font = pygame.font.Font(None, 36)
+    score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+    score_text_rect = score_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+    screen.blit(score_text, score_text_rect)
+
+    new_game_text = font.render("Press N for New Game", True, (255, 255, 255))
+    new_game_text_rect = new_game_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50))
+    screen.blit(new_game_text, new_game_text_rect)
+
+    pygame.display.flip()
+
 def main():
     pygame.init() #initialize all imported pygame modules
     clock = pygame.time.Clock()
     dt = 0
     score = 0  # Dodaj zmienną do przechowywania punktów
+    game_over = False
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) #Bierze dane z constants.py
     print("Starting Asteroids!")
@@ -32,6 +50,16 @@ def main():
     font = pygame.font.Font(None, 36)  # Dodaj czcionkę do wyświetlania punktów
 
     while True:
+        if game_over:
+            draw_game_over(screen, score)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_n:
+                        main()  # Restart the game
+            continue
+
         screen.fill((0, 0, 0))  # Wypełniamy ekran czarnym kolorem
         
         updatable.update(dt)
@@ -48,7 +76,7 @@ def main():
 
         for asteroid in asteroids.sprites():  # ✅ Sprawdzamy kolizję dla wszystkich asteroid w grupie
             if player.collides_with(asteroid):  # ✅ Używamy gotowej funkcji Pygame
-                print("Game over!") , sys.exit()  # ✅ Poprawne wyjście z gry
+                game_over = True  # Ustawiamy stan gry na game over
 
         for asteroid in asteroids.sprites():  
             for shot in shots.sprites():  
