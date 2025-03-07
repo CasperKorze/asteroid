@@ -1,9 +1,11 @@
 import pygame
+import random  # Importujemy moduł random
 from constants import *
 from player import * 
 from asteroid import Asteroid 
 from asteroidfield import AsteroidField
 from shot import Shot
+from ammo import Ammo
 
 def draw_game_over(screen, score):
     font = pygame.font.Font(None, 74)
@@ -38,11 +40,13 @@ def main():
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
+    ammos = pygame.sprite.Group()  # Dodaj grupę dla amunicji
     
     Player.containers = (updatable, drawable)
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = (updatable)
     Shot.containers = (shots, updatable, drawable)
+    Ammo.containers = (ammos, updatable, drawable)  # Dodaj kontenery dla amunicji
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) #gracz
     asteroid_field = AsteroidField()  #asteroidy
@@ -70,20 +74,30 @@ def main():
         score_text = font.render(f"Score: {score}", True, (255, 255, 255))  # Renderuj tekst punktów
         screen.blit(score_text, (10, 10))  # Wyświetl punkty na ekranie
 
+        ammo_text = font.render(f"Ammo: {player.ammo}", True, (255, 255, 255))  # Renderuj tekst amunicji
+        screen.blit(ammo_text, (10, 50))  # Wyświetl amunicję na ekranie
+
         pygame.display.flip()    # Odświeżamy ekran
 
         import sys  # ✅ Importujemy na początku pliku
 
         for asteroid in asteroids.sprites():  # ✅ Sprawdzamy kolizję dla wszystkich asteroid w grupie
-            if player.collides_with(asteroid):  # ✅ Używamy gotowej funkcji Pygame
+            if player.colliderect(asteroid):  # ✅ Używamy metody colliderect
                 game_over = True  # Ustawiamy stan gry na game over
 
         for asteroid in asteroids.sprites():  
             for shot in shots.sprites():  
-                if shot.collides_with(asteroid):
+                if shot.colliderect(asteroid):
                     asteroid.split()
                     shot.kill()
                     score += 10  # Zwiększ punktację, gdy gracz zestrzeli asteroidę
+                    if random.random() < 0.5:  # 50% szans na wypadnięcie amunicji
+                        Ammo(asteroid.position.x, asteroid.position.y)
+
+        for ammo in ammos.sprites():
+            if player.colliderect(ammo):
+                player.collect_ammo()
+                ammo.kill()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT: return

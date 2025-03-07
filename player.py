@@ -13,6 +13,7 @@ class Player(CircleShape):
         self.reloading = False  # Dodaj zmienną do przechowywania stanu przeładowania
         self.reload_time = 2  # Czas przeładowania w sekundach
         self.last_shot_time = 0  # Czas ostatniego strzału
+        self.ammo = 5  # Dodaj zmienną do przechowywania liczby magazynków
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -69,11 +70,20 @@ class Player(CircleShape):
                 self.timer = PLAYER_SHOOT_COOLDOWN  # BLOKUJEMY SPACE na 0.3s
 
     def shoot(self):
-        if self.shots_fired < 5:
+        if self.shots_fired < 5 and self.ammo > 0:
             shot = Shot(self.position.x, self.position.y)
             shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOT_SPEED
             self.shots_fired += 1
             self.last_shot_time = pygame.time.get_ticks()
-        else:
-            self.reloading = True
-            self.last_shot_time = pygame.time.get_ticks()
+            if self.shots_fired == 5:
+                self.ammo -= 1
+                self.reloading = True
+                self.last_shot_time = pygame.time.get_ticks()
+        elif self.ammo == 0:
+            print("Out of ammo!")
+
+    def collect_ammo(self):
+        self.ammo += 1
+
+    def colliderect(self, other):
+        return self.rect.colliderect(other.rect)
